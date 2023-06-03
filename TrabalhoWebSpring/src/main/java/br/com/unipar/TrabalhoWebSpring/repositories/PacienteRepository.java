@@ -16,10 +16,10 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
     @Query("SELECT p.nome AS nome, p.CPF AS cpf, p.email AS email FROM Paciente p ORDER BY p.nome ASC")
     List<PacienteProjection> findAllByOrderByNomeAsc();
 
-    interface PacienteProjection {
-        String getNome();
-        String getCpf();
-        String getEmail();
+        interface PacienteProjection {
+            String getNome();
+            String getCpf();
+            String getEmail();
     }
 
 }

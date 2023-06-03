@@ -2,6 +2,7 @@ package br.com.unipar.TrabalhoWebSpring.models;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
+@DynamicUpdate
 @Table(name = "Paciente")
 @ApiModel(description = "Representação de um Paciente")
 public class Paciente {
@@ -30,18 +32,19 @@ public class Paciente {
     @NotEmpty
     @NotBlank
     @NotNull
+    @Column(updatable = false)
     private String email;
 
     @Size(min = 3, max = 255)
     @NotEmpty
     @NotBlank
-    @NotNull
     private String telefone;
 
     @Size(min = 3, max = 255)
     @NotEmpty
     @NotBlank
     @NotNull
+    @Column(updatable = false)
     private String CPF;
 
     @Valid

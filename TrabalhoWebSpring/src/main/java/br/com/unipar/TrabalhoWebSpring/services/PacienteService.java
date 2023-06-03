@@ -1,6 +1,5 @@
 package br.com.unipar.TrabalhoWebSpring.services;
 
-import br.com.unipar.TrabalhoWebSpring.models.Endereco;
 import br.com.unipar.TrabalhoWebSpring.models.Paciente;
 import br.com.unipar.TrabalhoWebSpring.repositories.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;

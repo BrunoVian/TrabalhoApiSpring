@@ -3,8 +3,10 @@ package br.com.unipar.TrabalhoWebSpring.models;
 import br.com.unipar.TrabalhoWebSpring.enums.EspecialidadeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -14,6 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "Medico")
 @ApiModel(description = "Representação de um Médico")
+@DynamicUpdate
 public class Medico {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
@@ -29,6 +32,7 @@ public class Medico {
     @NotEmpty
     @NotBlank
     @NotNull
+    @Column(updatable = false)
     private String email;
 
     @NotEmpty
@@ -41,16 +45,15 @@ public class Medico {
     @NotBlank
     @NotNull
     @Size(min=12,max = 12)
+    @Column(updatable = false)
     private String CRM;
 
-    @NotEmpty
-    @NotBlank
     @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(updatable = false)
     private EspecialidadeEnum especialidade;
 
-    @NotEmpty
-    @NotBlank
+    @Valid
     @NotNull
     @OneToOne
     private Endereco endereco;
