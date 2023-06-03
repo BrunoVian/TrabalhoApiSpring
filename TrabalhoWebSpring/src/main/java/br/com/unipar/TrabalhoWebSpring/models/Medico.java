@@ -55,4 +55,6 @@ public class Medico {
     @OneToOne
     private Endereco endereco;
 
+    private Boolean stAtivo;
+
 }

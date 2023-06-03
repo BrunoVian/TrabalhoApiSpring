@@ -50,5 +50,6 @@ public class Paciente {
     private Endereco endereco;
 
 
+    private Boolean stAtivo;
 
 }
