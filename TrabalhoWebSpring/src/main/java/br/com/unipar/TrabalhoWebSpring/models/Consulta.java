@@ -35,4 +35,36 @@ public class Consulta {
     @NotBlank
     @NotNull
     private Date dtHr;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
+    }
+
+    public Medico getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medico medico) {
+        this.medico = medico;
+    }
+
+    public Date getDtHr() {
+        return dtHr;
+    }
+
+    public void setDtHr(Date dtHr) {
+        this.dtHr = dtHr;
+    }
 }

@@ -34,7 +34,6 @@ public class Endereco {
     @NotNull
     private String bairro;
 
-    @Size(min = 0, max = 255)
     private int numero;
 
     public Long getId() {

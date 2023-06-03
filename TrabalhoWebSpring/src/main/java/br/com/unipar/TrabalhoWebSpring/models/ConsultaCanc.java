@@ -30,4 +30,28 @@ public class ConsultaCanc {
     @NotNull
     @Enumerated(EnumType.STRING)
     private MotivoCancEnum mtv_CancelamentoEnum;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Consulta getConsulta() {
+        return consulta;
+    }
+
+    public void setConsulta(Consulta consulta) {
+        this.consulta = consulta;
+    }
+
+    public MotivoCancEnum getMtv_CancelamentoEnum() {
+        return mtv_CancelamentoEnum;
+    }
+
+    public void setMtv_CancelamentoEnum(MotivoCancEnum mtv_CancelamentoEnum) {
+        this.mtv_CancelamentoEnum = mtv_CancelamentoEnum;
+    }
 }
