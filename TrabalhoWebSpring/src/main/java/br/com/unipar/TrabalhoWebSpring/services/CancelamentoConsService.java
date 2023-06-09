@@ -44,13 +44,13 @@ public class CancelamentoConsService {
     }
 
     public void validaCancelamento(ConsultaCanc consultaCanc) throws Exception{
-        LocalDateTime dataHoraAtual = LocalDateTime.now();
-        LocalDateTime dataHoraConsulta = consultaCanc.getConsulta().getDtHr().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-
-        // Verificar se a consulta está dentro da antecedência mínima de 24 horas para cancelamento
-        if (dataHoraAtual.plusHours(24).isAfter(dataHoraConsulta)) {
-            throw new RuntimeException("A consulta só pode ser cancelada com antecedência mínima de 24 horas.");
-        }
+//        LocalDateTime dataHoraAtual = LocalDateTime.now();
+//        LocalDateTime dataHoraConsulta = consultaCanc.getConsulta().getDtHr().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+//
+//        // Verificar se a consulta está dentro da antecedência mínima de 24 horas para cancelamento
+//        if (dataHoraAtual.plusHours(24).isAfter(dataHoraConsulta)) {
+//            throw new RuntimeException("A consulta só pode ser cancelada com antecedência mínima de 24 horas.");
+//        }
 
     }
 

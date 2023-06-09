@@ -4,6 +4,8 @@ import br.com.unipar.TrabalhoWebSpring.models.Medico;
 import br.com.unipar.TrabalhoWebSpring.models.Paciente;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class ConsultaDTO {
 
@@ -11,9 +13,9 @@ public class ConsultaDTO {
 
     private Long medicoId;
 
-    private Date dtHr;
+    private LocalDateTime dtHr;
 
-    public ConsultaDTO(Long pacienteId, Long medicoId, Date dtHr) {
+    public ConsultaDTO(Long pacienteId, Long medicoId, LocalDateTime dtHr) {
         this.pacienteId = pacienteId;
         this.medicoId = medicoId;
         this.dtHr = dtHr;
@@ -36,11 +38,11 @@ public class ConsultaDTO {
         this.medicoId = medicoId;
     }
 
-    public Date getDtHr() {
+    public LocalDateTime getDtHr() {
         return dtHr;
     }
 
-    public void setDtHr(Date dtHr) {
+    public void setDtHr(LocalDateTime dtHr) {
         this.dtHr = dtHr;
     }
 }

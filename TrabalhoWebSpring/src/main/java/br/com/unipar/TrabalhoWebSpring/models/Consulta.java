@@ -10,6 +10,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 @Entity
 @Table(name = "Consulta")
 @ApiModel(description = "Representação de uma Consulta")
@@ -32,7 +35,7 @@ public class Consulta {
     private Medico medico;
 
     @NotNull
-    private Date dtHr;
+    private LocalDateTime dtHr;
 
     public Long getId() {
         return id;
@@ -58,11 +61,11 @@ public class Consulta {
         this.medico = medico;
     }
 
-    public Date getDtHr() {
+    public LocalDateTime getDtHr() {
         return dtHr;
     }
 
-    public void setDtHr(Date dtHr) {
+    public void setDtHr(LocalDateTime dtHr) {
         this.dtHr = dtHr;
     }
 }

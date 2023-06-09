@@ -28,7 +28,6 @@ public class ConsultaService {
     private MedicoRepository medicoRepository;
 
     public Consulta insert(ConsultaDTO request) throws Exception{
-
         Consulta consulta = new Consulta();
 
         Paciente paciente = pacienteRepository.findById(request.getPacienteId())
@@ -46,7 +45,19 @@ public class ConsultaService {
         return consulta;
     }
 
-    public Consulta edit(Consulta consulta) throws Exception{
+    public Consulta edit(ConsultaDTO request) throws Exception{
+
+        Consulta consulta = new Consulta();
+
+        Paciente paciente = pacienteRepository.findById(request.getPacienteId())
+                .orElseThrow(() -> new EntityNotFoundException("Paciente com id: " + request.getPacienteId() + " não encontrado"));
+
+        Medico medico = medicoRepository.findById(request.getMedicoId())
+                .orElseThrow(() -> new EntityNotFoundException("Paciente com id: " + request.getMedicoId() + " não encontrado"));
+
+        consulta.setMedico(medico);
+        consulta.setPaciente(paciente);
+        consulta.setDtHr(request.getDtHr());
 
         consultaRepository.saveAndFlush(consulta);
 
@@ -76,36 +87,36 @@ public class ConsultaService {
         }
     }
 
-    public void validaHoraConsulta (Consulta consulta) throws Exception{
-        Calendar c = Calendar.getInstance();
-        c.setTime(consulta.getDtHr());
-        int diaDaSemana = c.get(Calendar.DAY_OF_WEEK);
-        LocalTime horarioInicio = LocalTime.of(7, 0);
-        LocalTime horarioFim = LocalTime.of(19, 0);
-        LocalTime horarioConsulta = consulta.getDtHr().toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
-
-        if(diaDaSemana == Calendar.SUNDAY){
-            throw new Exception("O consultorio fica aberto de segunda a sabado!");
-        }
-
-        if(horarioConsulta.isBefore(horarioInicio) || horarioConsulta.isAfter(horarioFim)){
-            throw new Exception("O consultorio fica aberto das 07:00 até as 19:00!");
-        }
-
-        LocalDateTime dataHoraAtual = LocalDateTime.now();
-        LocalDateTime dataHoraConsulta = consulta.getDtHr().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-
-        // Verificar se a consulta foi agendada com antecedência mínima de 30 minutos
-        if (dataHoraAtual.plusMinutes(30).isAfter(dataHoraConsulta)) {
-            throw new Exception("A consulta deve ser agendada com antecedência mínima de 30 minutos.");
-        }
-
-        // Verificar se a duração da consulta é de 1 hora
-        LocalDateTime dataHoraFimConsulta = dataHoraConsulta.plusHours(1);
-        if (dataHoraFimConsulta.isAfter(dataHoraConsulta)) {
-            throw new Exception("A consulta deve ter duração fixa de 1 hora.");
-        }
-    }
+//    public void validaHoraConsulta (Consulta consulta) throws Exception{
+//        Calendar c = Calendar.getInstance();
+//        c.setTime(consulta.getDtHr());
+//        int diaDaSemana = c.get(Calendar.DAY_OF_WEEK);
+//        LocalDateTime horarioInicio = LocalDateTime.of(7, 0);
+//        LocalDateTime horarioFim = LocalDateTime.of(19, 0);
+//        LocalDateTime horarioConsulta = consulta.getDtHr().toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+//
+//        if(diaDaSemana == Calendar.SUNDAY){
+//            throw new Exception("O consultorio fica aberto de segunda a sabado!");
+//        }
+//
+//        if(horarioConsulta.isBefore(horarioInicio) || horarioConsulta.isAfter(horarioFim)){
+//            throw new Exception("O consultorio fica aberto das 07:00 até as 19:00!");
+//        }
+//
+//        LocalDateTime dataHoraAtual = LocalDateTime.now();
+//        LocalDateTime dataHoraConsulta = consulta.getDtHr().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+//
+//        // Verificar se a consulta foi agendada com antecedência mínima de 30 minutos
+//        if (dataHoraAtual.plusMinutes(30).isAfter(dataHoraConsulta)) {
+//            throw new Exception("A consulta deve ser agendada com antecedência mínima de 30 minutos.");
+//        }
+//
+//        // Verificar se a duração da consulta é de 1 hora
+//        LocalDateTime dataHoraFimConsulta = dataHoraConsulta.plusHours(1);
+//        if (dataHoraFimConsulta.isAfter(dataHoraConsulta)) {
+//            throw new Exception("A consulta deve ter duração fixa de 1 hora.");
+//        }
+//    }
 
     public void validaAgendamento(Consulta consulta)throws Exception{
         List<Consulta> consultasDoPaciente = consultaRepository.findByPacienteAndDtHr(consulta.getPaciente(), consulta.getDtHr());
