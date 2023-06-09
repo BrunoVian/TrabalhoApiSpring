@@ -20,19 +20,17 @@ public class Consulta {
     @ApiModelProperty(notes = "ID autogerado da Consulta")
     private Long id;
 
-    @NotEmpty
-    @NotBlank
+
     @NotNull
     @ManyToOne
     @JoinColumn(name = "paciente_id")
     private Paciente paciente;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "medico_id")
     private Medico medico;
 
-    @NotEmpty
-    @NotBlank
     @NotNull
     private Date dtHr;
 

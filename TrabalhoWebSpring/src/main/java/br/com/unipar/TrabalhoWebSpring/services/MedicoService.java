@@ -1,6 +1,5 @@
 package br.com.unipar.TrabalhoWebSpring.services;
 
-
 import br.com.unipar.TrabalhoWebSpring.models.Medico;
 import br.com.unipar.TrabalhoWebSpring.repositories.MedicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;

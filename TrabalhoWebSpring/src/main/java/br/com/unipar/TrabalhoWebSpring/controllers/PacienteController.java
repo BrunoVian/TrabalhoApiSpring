@@ -2,6 +2,7 @@ package br.com.unipar.TrabalhoWebSpring.controllers;
 
 
 import br.com.unipar.TrabalhoWebSpring.models.Paciente;
+import br.com.unipar.TrabalhoWebSpring.models.dto.PacienteEditDTO;
 import br.com.unipar.TrabalhoWebSpring.repositories.PacienteRepository;
 import br.com.unipar.TrabalhoWebSpring.services.PacienteService;
 import io.swagger.annotations.Api;
@@ -28,12 +29,13 @@ public class PacienteController {
         return pacienteService.insert(paciente);
     }
 
-    @PutMapping
-    @ApiOperation(value = "Editar um paciente")
-    public Paciente edit(@RequestBody Paciente paciente) throws Exception{
+    @PutMapping(path = "/{id}")
+    @ApiOperation("Editar os dados de um paciente")
+    public Paciente edit(@PathVariable Long id, @RequestBody @Valid PacienteEditDTO request) throws Exception {
 
-        return pacienteService.edit(paciente);
+        Paciente updatedPaciente = pacienteService.edit(id, request);
 
+        return updatedPaciente;
     }
 
     @DeleteMapping(path = "/{id}")

@@ -2,10 +2,16 @@ package br.com.unipar.TrabalhoWebSpring.services;
 
 import br.com.unipar.TrabalhoWebSpring.models.Consulta;
 import br.com.unipar.TrabalhoWebSpring.models.Medico;
+import br.com.unipar.TrabalhoWebSpring.models.Paciente;
+import br.com.unipar.TrabalhoWebSpring.models.dto.ConsultaDTO;
+import br.com.unipar.TrabalhoWebSpring.models.dto.PacienteEditDTO;
 import br.com.unipar.TrabalhoWebSpring.repositories.ConsultaRepository;
+import br.com.unipar.TrabalhoWebSpring.repositories.MedicoRepository;
+import br.com.unipar.TrabalhoWebSpring.repositories.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -16,8 +22,24 @@ public class ConsultaService {
 
     @Autowired
     private ConsultaRepository consultaRepository;
+    @Autowired
+    private PacienteRepository pacienteRepository;
+    @Autowired
+    private MedicoRepository medicoRepository;
 
-    public Consulta insert(Consulta consulta) throws Exception{
+    public Consulta insert(ConsultaDTO request) throws Exception{
+
+        Consulta consulta = new Consulta();
+
+        Paciente paciente = pacienteRepository.findById(request.getPacienteId())
+                .orElseThrow(() -> new EntityNotFoundException("Paciente com id: " + request.getPacienteId() + " não encontrado"));
+
+        Medico medico = medicoRepository.findById(request.getMedicoId())
+                .orElseThrow(() -> new EntityNotFoundException("Paciente com id: " + request.getMedicoId() + " não encontrado"));
+
+        consulta.setMedico(medico);
+        consulta.setPaciente(paciente);
+        consulta.setDtHr(request.getDtHr());
 
         consultaRepository.saveAndFlush(consulta);
 

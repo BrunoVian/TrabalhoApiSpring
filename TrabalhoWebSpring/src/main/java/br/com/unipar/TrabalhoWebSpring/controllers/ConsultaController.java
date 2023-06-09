@@ -1,6 +1,9 @@
 package br.com.unipar.TrabalhoWebSpring.controllers;
 
 import br.com.unipar.TrabalhoWebSpring.models.Consulta;
+import br.com.unipar.TrabalhoWebSpring.models.Paciente;
+import br.com.unipar.TrabalhoWebSpring.models.dto.ConsultaDTO;
+import br.com.unipar.TrabalhoWebSpring.models.dto.PacienteEditDTO;
 import br.com.unipar.TrabalhoWebSpring.services.ConsultaService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,10 +22,20 @@ public class ConsultaController {
 
     @PostMapping
     @ApiOperation(value = "Adicionar uma consulta")
-    public Consulta insert(@Valid @RequestBody Consulta consulta) throws Exception{
+    public Consulta insert(@Valid @RequestBody ConsultaDTO request) throws Exception{
 
-        return consultaService.insert(consulta);
+        Consulta insertConsulta = consultaService.insert(request);
+
+        return insertConsulta;
     }
+
+//    @PutMapping(path = "/{id}")
+//    @ApiOperation("Editar os dados de um paciente")
+//    public Paciente edit(@PathVariable Long id, @RequestBody @Valid PacienteEditDTO request) throws Exception {
+//        Paciente updatedPaciente = pacienteService.edit(id, request);
+//        return updatedPaciente;
+//    }
+
 
     @PutMapping
     @ApiOperation(value = "Editar uma consulta")
