@@ -39,6 +39,7 @@ public class ConsultaService {
         consulta.setPaciente(paciente);
         consulta.setDtHr(request.getDtHr());
 
+        validaDisponibilidadePaciente(consulta);
         validaStatus(consulta);
         validarHorarioFuncionamento(consulta);
         validarAntecedencia(consulta);
@@ -50,7 +51,6 @@ public class ConsultaService {
     }
 
     public Consulta edit(ConsultaDTO request) throws Exception {
-
         Consulta consulta = new Consulta();
 
         Paciente paciente = pacienteRepository.findById(request.getPacienteId())
@@ -132,4 +132,15 @@ public class ConsultaService {
         }
     }
 
+    public void validaDisponibilidadePaciente(Consulta consulta) throws Exception{
+        Paciente paciente = consulta.getPaciente();
+        LocalDateTime dtHrConsulta = consulta.getDtHr();
+
+        List<Consulta> consultas = consultaRepository.findByPacienteAndDtHr(paciente, dtHrConsulta);
+        if (!consultas.isEmpty()) {
+            throw new Exception("Já existe uma consulta agendada para o paciente no mesmo dia.");
+        }
+    }
+
+    
 }
