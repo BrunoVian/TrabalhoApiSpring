@@ -18,4 +18,10 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
     @Query
     public List<Consulta> findByMedicoAndDtHr(Medico consultaMedico, LocalDateTime consultaHr);
 
+    @Query("SELECT c FROM Consulta c WHERE c.medico = :medico AND c.dtHr > :horaLimiteAnterior AND c.dtHr <= :horaLimite")
+    List<Consulta> findConsultasProximas(Medico medico, LocalDateTime horaLimiteAnterior, LocalDateTime horaLimite);
+
+
+
+
 }

@@ -4,7 +4,6 @@ import br.com.unipar.TrabalhoWebSpring.models.Consulta;
 import br.com.unipar.TrabalhoWebSpring.models.Medico;
 import br.com.unipar.TrabalhoWebSpring.models.Paciente;
 import br.com.unipar.TrabalhoWebSpring.models.dto.ConsultaDTO;
-import br.com.unipar.TrabalhoWebSpring.models.dto.PacienteEditDTO;
 import br.com.unipar.TrabalhoWebSpring.repositories.ConsultaRepository;
 import br.com.unipar.TrabalhoWebSpring.repositories.MedicoRepository;
 import br.com.unipar.TrabalhoWebSpring.repositories.PacienteRepository;
@@ -15,7 +14,6 @@ import javax.persistence.EntityNotFoundException;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -43,7 +41,8 @@ public class ConsultaService {
 
         validaStatus(consulta);
         validarHorarioFuncionamento(consulta);
-        agendarConsulta(consulta);
+        validarAntecedencia(consulta);
+        validaDisponibilidadeMedico(consulta);
 
         consultaRepository.saveAndFlush(consulta);
 
@@ -92,43 +91,6 @@ public class ConsultaService {
         }
     }
 
-//    public void validaHoraConsulta (Consulta consulta) throws Exception{
-//        LocalDateTime localDateTime;
-//
-//        Calendar c = Calendar.getInstance();
-//        c.setTime(consulta.getDtHr());
-//        int diaDaSemana = c.get(Calendar.DAY_OF_WEEK);
-//        LocalDateTime horarioInicio = LocalDateTime.of(7, 0);
-//        LocalDateTime horarioFim = LocalDateTime.of(19, 0);
-//        LocalDateTime horarioConsulta = consulta.getDtHr().toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
-//        LocalDateTime dataHoraAtual = LocalDateTime.now();
-//        LocalDateTime dataHoraConsulta = consulta.getDtHr().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-//
-//        // Verificar se a consulta foi agendada com antecedência mínima de 30 minutos
-//        if (dataHoraAtual.plusMinutes(30).isAfter(dataHoraConsulta)) {
-//            throw new Exception("A consulta deve ser agendada com antecedência mínima de 30 minutos.");
-//        }
-//
-//        // Verificar se a duração da consulta é de 1 hora
-//        LocalDateTime dataHoraFimConsulta = dataHoraConsulta.plusHours(1);
-//        if (dataHoraFimConsulta.isAfter(dataHoraConsulta)) {
-//            throw new Exception("A consulta deve ter duração fixa de 1 hora.");
-//        }
-//    }
-//
-//    public void validaAgendamento(Consulta consulta)throws Exception{
-//        List<Consulta> consultasDoPaciente = consultaRepository.findByPacienteAndDtHr(consulta.getPaciente(), consulta.getDtHr());
-//        if (!consultasDoPaciente.isEmpty()) {
-//            throw new Exception("Já existe uma consulta agendada para o paciente nessa data!");
-//        }
-//
-//        // Não permitir o agendamento de uma consulta com um médico que já possui outra consulta agendada na mesma data/hora
-//        List<Consulta> consultasDoMedico = consultaRepository.findByMedicoAndDtHr(consulta.getMedico(), consulta.getDtHr());
-//        if (!consultasDoMedico.isEmpty()) {
-//            throw new Exception("O médico já possui uma consulta agendada nessa data/hora!");
-//        }
-//    }
-
     public static void validarHorarioFuncionamento(Consulta consulta) throws Exception {
         DayOfWeek diaSemana = consulta.getDtHr().getDayOfWeek();
 
@@ -145,7 +107,7 @@ public class ConsultaService {
         }
     }
 
-    public void agendarConsulta(Consulta consulta) throws Exception {
+    public void validarAntecedencia(Consulta consulta) throws Exception {
         LocalDateTime now = LocalDateTime.now();
 
         if (now.plusMinutes(30).isAfter(consulta.getDtHr())) {
@@ -153,17 +115,21 @@ public class ConsultaService {
         }
     }
 
-    private Medico escolherMedicoDisponivel(Consulta consulta) {
-        List<Consulta> consultasDoMedico = consultaRepository.findByMedicoAndDtHr(consulta.getMedico(), consulta.getDtHr());
-        if (consultasDoMedico.isEmpty()) {
-            // Escolha aleatoriamente um médico disponível
-            Random random = new Random();
-            int index = random.nextInt(consultasDoMedico.size());
-            return consultasDoMedico.get(index).getMedico();
+    public void validaDisponibilidadeMedico(Consulta consulta) throws Exception {
+        LocalDateTime dataHoraConsulta = consulta.getDtHr();
+        Medico medico = consulta.getMedico();
+
+        List<Consulta> consultasAgendadas = consultaRepository.findByMedicoAndDtHr(medico, dataHoraConsulta);
+        if (!consultasAgendadas.isEmpty()) {
+            throw new Exception("O médico já possui uma consulta agendada na mesma data e hora.");
         }
 
-        return null; // Retorne null se não houver médicos disponíveis
+        LocalDateTime horaLimite = dataHoraConsulta.plusHours(1);
+        LocalDateTime horaLimiteAnterior = dataHoraConsulta.minusHours(1);
+        List<Consulta> consultasProximas = consultaRepository.findConsultasProximas(medico, horaLimiteAnterior, horaLimite);
+        if (!consultasProximas.isEmpty()) {
+            throw new Exception("O médico possui uma consulta agendada dentro de 1 hora após o horário de agendamento.");
+        }
     }
-
 
 }
