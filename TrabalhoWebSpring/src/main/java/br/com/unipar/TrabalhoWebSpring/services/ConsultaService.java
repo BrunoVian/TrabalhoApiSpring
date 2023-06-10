@@ -39,11 +39,7 @@ public class ConsultaService {
         consulta.setPaciente(paciente);
         consulta.setDtHr(request.getDtHr());
 
-        validaDisponibilidadePaciente(consulta);
-        validaStatus(consulta);
-        validarHorarioFuncionamento(consulta);
-        validarAntecedencia(consulta);
-        validaDisponibilidadeMedico(consulta);
+        validaConsulta(consulta);
 
         consultaRepository.saveAndFlush(consulta);
 
@@ -63,6 +59,8 @@ public class ConsultaService {
         consulta.setMedico(medico);
         consulta.setPaciente(paciente);
         consulta.setDtHr(request.getDtHr());
+
+        validaConsulta(consulta);
 
         consultaRepository.saveAndFlush(consulta);
 
@@ -141,6 +139,33 @@ public class ConsultaService {
         if (!consultas.isEmpty()) {
             throw new Exception("Já existe uma consulta agendada para o paciente no mesmo dia.");
         }
+    }
+
+//    public Medico escolherMedicoAleatoriamente(Consulta consulta) throws Exception {
+//
+//        List<Medico> medicosDisponiveis = medicoRepository.findByDisponivelEm(dtHr);
+//
+//        if (medicosDisponiveis.isEmpty()) {
+//            throw new Exception("Não há médicos disponíveis na data/hora especificada.");
+//        }
+//
+//        validaConsulta(consulta);
+//
+//        Random random = new Random();
+//        int index = random.nextInt(medicosDisponiveis.size());
+//
+//        return medicosDisponiveis.get(index);
+//
+//    }
+
+    public void validaConsulta(Consulta consulta) throws Exception{
+
+        validaDisponibilidadePaciente(consulta);
+        validaStatus(consulta);
+        validarHorarioFuncionamento(consulta);
+        validarAntecedencia(consulta);
+        validaDisponibilidadeMedico(consulta);
+
     }
 
 

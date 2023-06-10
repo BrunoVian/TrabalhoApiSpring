@@ -1,10 +1,14 @@
 package br.com.unipar.TrabalhoWebSpring.services;
 
+import br.com.unipar.TrabalhoWebSpring.models.Consulta;
 import br.com.unipar.TrabalhoWebSpring.models.ConsultaCancelamento;
+import br.com.unipar.TrabalhoWebSpring.models.dto.ConsultaCancelamentoDTO;
 import br.com.unipar.TrabalhoWebSpring.repositories.ConsultaCancelamentoRepository;
+import br.com.unipar.TrabalhoWebSpring.repositories.ConsultaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,36 +16,47 @@ import java.util.Optional;
 public class ConsultaCancelamentoService {
 
     @Autowired
-    private ConsultaCancelamentoRepository consultaCancRepository;
+    private ConsultaCancelamentoRepository consultaCancelamentoRespository;
 
-    public ConsultaCancelamento insert(ConsultaCancelamento consulta) throws Exception{
+    @Autowired
+    private ConsultaRepository consultaRepository;
 
-        consultaCancRepository.saveAndFlush(consulta);
+    public ConsultaCancelamento insert(ConsultaCancelamentoDTO request) throws Exception {
+
+        ConsultaCancelamento consultaCancelamento = new ConsultaCancelamento();
+
+        Consulta consulta = consultaRepository.findById(request.getConsultaId()).orElseThrow(()
+                -> new EntityNotFoundException("Consulta com id: " + request.getConsultaId() + " não encontrada"));
+
+        consultaCancelamento.setConsulta(consulta);
+        consultaCancelamento.setMotivoCancelamentoEnum(request.getMotivoCancelamentoEnum());
+
+        consultaCancelamentoRespository.saveAndFlush(consultaCancelamento);
+
+        return consultaCancelamento;
+    }
+
+    public ConsultaCancelamento edit(ConsultaCancelamento consulta) throws Exception {
+
+        consultaCancelamentoRespository.saveAndFlush(consulta);
 
         return consulta;
     }
 
-    public ConsultaCancelamento edit(ConsultaCancelamento consulta) throws Exception{
-
-        consultaCancRepository.saveAndFlush(consulta);
-
-        return consulta;
+    public List<ConsultaCancelamento> findAll() {
+        return consultaCancelamentoRespository.findAll();
     }
 
-    public List<ConsultaCancelamento> findAll(){
-        return consultaCancRepository.findAll();
-    }
+    public ConsultaCancelamento findById(Long id) throws Exception {
+        Optional<ConsultaCancelamento> retorno = consultaCancelamentoRespository.findById(id);
 
-    public ConsultaCancelamento findById(Long id) throws Exception{
-        Optional<ConsultaCancelamento> retorno = consultaCancRepository.findById(id);
-
-        if(retorno.isPresent())
+        if (retorno.isPresent())
             return retorno.get();
         else
             throw new Exception("Consulta com ID " + id + " Não Identificado");
     }
 
-    public void validaCancelamento(ConsultaCancelamento consultaCancelamento) throws Exception{
+    public void validaCancelamento(ConsultaCancelamento consultaCancelamento) throws Exception {
 //        LocalDateTime dataHoraAtual = LocalDateTime.now();
 //        LocalDateTime dataHoraConsulta = consultaCanc.getConsulta().getDtHr().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 //

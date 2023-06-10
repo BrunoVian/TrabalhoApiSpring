@@ -22,13 +22,13 @@ public class MedicoController {
 
     @PostMapping
     @ApiOperation(value = "Adicionar um medico")
-    public Medico insert(@Valid @RequestBody Medico medico) throws Exception{
+    public Medico insert(@RequestBody Medico medico) throws Exception{
 
         return medicoService.insert(medico);
     }
 
     @PutMapping
-    @ApiOperation(value = "Editar um medico")
+    @ApiOperation( value = "Editar um medico")
     public Medico edit(@RequestBody Medico medico) throws Exception{
 
         return medicoService.edit(medico);
@@ -70,9 +70,5 @@ public class MedicoController {
 
         return medicoService.findAllOrder();
     }
-
-
-
-
 
 }

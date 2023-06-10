@@ -18,15 +18,12 @@ public class ConsultaCancelamento {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     @ApiModelProperty(notes = "ID autogerado da ConsultaCanc")
     private Long id;
-    @NotEmpty
-    @NotBlank
+
     @NotNull
     @OneToOne
     @JoinColumn(name = "consulta_id")
     private Consulta consulta;
 
-    @NotEmpty
-    @NotBlank
     @NotNull
     @Enumerated(EnumType.STRING)
     private MotivoCancelamentoEnum motivoCancelamentoEnum;

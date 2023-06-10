@@ -13,7 +13,7 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
     public List<Medico> findByNomeContainingAllIgnoringCase(String nome);
 
     @Query("SELECT m.nome AS nome, m.CRM AS CRM, m.email AS email, m.especialidade as especialidade FROM Medico m ORDER BY m.nome ASC")
-    List<MedicoRepository.MedicoProjection> findAllByOrderByNomeAsc();
+    public List<MedicoRepository.MedicoProjection> findAllByOrderByNomeAsc();
 
     interface MedicoProjection {
         String getNome();

@@ -1,6 +1,7 @@
 package br.com.unipar.TrabalhoWebSpring.controllers;
 
 import br.com.unipar.TrabalhoWebSpring.models.ConsultaCancelamento;
+import br.com.unipar.TrabalhoWebSpring.models.dto.ConsultaCancelamentoDTO;
 import br.com.unipar.TrabalhoWebSpring.services.ConsultaCancelamentoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,34 +17,32 @@ import java.util.List;
 public class ConsultaCancelamentoController {
 
     @Autowired
-    private ConsultaCancelamentoService consultaCanService;
+    private ConsultaCancelamentoService consultaCancelamentoService;
 
     @PostMapping
     @ApiOperation(value = "Adicionar um Cancelamento de consulta")
-    public ConsultaCancelamento insert(@Valid @RequestBody ConsultaCancelamento consultaCancelamento) throws Exception{
+    public ConsultaCancelamento insert(@Valid @RequestBody ConsultaCancelamentoDTO request) throws Exception{
 
-        return consultaCanService.insert(consultaCancelamento);
+        return consultaCancelamentoService.insert(request);
     }
 
     @PutMapping
     @ApiOperation(value = "Editar um Cancelamento de consulta")
     public ConsultaCancelamento edit(@RequestBody ConsultaCancelamento consultaCancelamento) throws Exception{
-
-        return consultaCanService.edit(consultaCancelamento);
-
+        return consultaCancelamentoService.edit(consultaCancelamento);
     }
 
     @GetMapping
     @ApiOperation(value = "Obter uma lista de Cancelamento de consultas")
     public List<ConsultaCancelamento> findAll(){
 
-        return consultaCanService.findAll();
+        return consultaCancelamentoService.findAll();
     }
 
     @GetMapping(path = "/{id}")
     @ApiOperation(value = "Obter um cancelamento de consulta pelo seu ID")
     public ConsultaCancelamento findById(@PathVariable Long id) throws Exception {
 
-        return consultaCanService.findById(id);
+        return consultaCancelamentoService.findById(id);
     }
 }

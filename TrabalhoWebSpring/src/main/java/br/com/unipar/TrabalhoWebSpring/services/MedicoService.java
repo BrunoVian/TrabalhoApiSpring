@@ -23,6 +23,7 @@ public class MedicoService {
 
     public Medico edit(Medico medico) throws Exception{
 
+
         medicoRepository.saveAndFlush(medico);
 
         return medico;
