@@ -1,41 +1,39 @@
 package br.com.unipar.TrabalhoWebSpring.services;
 
-import br.com.unipar.TrabalhoWebSpring.models.ConsultaCanc;
-import br.com.unipar.TrabalhoWebSpring.repositories.CancelamentoConsRepository;
+import br.com.unipar.TrabalhoWebSpring.models.ConsultaCancelamento;
+import br.com.unipar.TrabalhoWebSpring.repositories.ConsultaCancelamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CancelamentoConsService {
+public class ConsultaCancelamentoService {
 
     @Autowired
-    private CancelamentoConsRepository consultaCancRepository;
+    private ConsultaCancelamentoRepository consultaCancRepository;
 
-    public ConsultaCanc insert(ConsultaCanc consulta) throws Exception{
-
-        consultaCancRepository.saveAndFlush(consulta);
-
-        return consulta;
-    }
-
-    public ConsultaCanc edit(ConsultaCanc consulta) throws Exception{
+    public ConsultaCancelamento insert(ConsultaCancelamento consulta) throws Exception{
 
         consultaCancRepository.saveAndFlush(consulta);
 
         return consulta;
     }
 
-    public List<ConsultaCanc> findAll(){
+    public ConsultaCancelamento edit(ConsultaCancelamento consulta) throws Exception{
+
+        consultaCancRepository.saveAndFlush(consulta);
+
+        return consulta;
+    }
+
+    public List<ConsultaCancelamento> findAll(){
         return consultaCancRepository.findAll();
     }
 
-    public ConsultaCanc findById(Long id) throws Exception{
-        Optional<ConsultaCanc> retorno = consultaCancRepository.findById(id);
+    public ConsultaCancelamento findById(Long id) throws Exception{
+        Optional<ConsultaCancelamento> retorno = consultaCancRepository.findById(id);
 
         if(retorno.isPresent())
             return retorno.get();
@@ -43,7 +41,7 @@ public class CancelamentoConsService {
             throw new Exception("Consulta com ID " + id + " Não Identificado");
     }
 
-    public void validaCancelamento(ConsultaCanc consultaCanc) throws Exception{
+    public void validaCancelamento(ConsultaCancelamento consultaCancelamento) throws Exception{
 //        LocalDateTime dataHoraAtual = LocalDateTime.now();
 //        LocalDateTime dataHoraConsulta = consultaCanc.getConsulta().getDtHr().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 //

@@ -44,8 +44,6 @@ public class PacienteController {
         pacienteService.remove(id);
     }
 
-
-
     @GetMapping
     @ApiOperation(value = "Obter uma lista de pacintes")
     public List<Paciente> findAll(){

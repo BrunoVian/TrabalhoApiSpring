@@ -1,6 +1,6 @@
 package br.com.unipar.TrabalhoWebSpring.models;
 
-import br.com.unipar.TrabalhoWebSpring.enums.MotivoCancEnum;
+import br.com.unipar.TrabalhoWebSpring.enums.MotivoCancelamentoEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -10,9 +10,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "ConsultaCanc")
+@Table(name = "ConsultaCancelamento")
 @ApiModel(description = "Representação de uma Consulta Cancelada")
-public class ConsultaCanc {
+public class ConsultaCancelamento {
 
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class ConsultaCanc {
     @NotBlank
     @NotNull
     @Enumerated(EnumType.STRING)
-    private MotivoCancEnum mtv_CancelamentoEnum;
+    private MotivoCancelamentoEnum motivoCancelamentoEnum;
 
     public Long getId() {
         return id;
@@ -47,11 +47,11 @@ public class ConsultaCanc {
         this.consulta = consulta;
     }
 
-    public MotivoCancEnum getMtv_CancelamentoEnum() {
-        return mtv_CancelamentoEnum;
+    public MotivoCancelamentoEnum getMotivoCancelamentoEnum() {
+        return motivoCancelamentoEnum;
     }
 
-    public void setMtv_CancelamentoEnum(MotivoCancEnum mtv_CancelamentoEnum) {
-        this.mtv_CancelamentoEnum = mtv_CancelamentoEnum;
+    public void setMotivoCancelamentoEnum(MotivoCancelamentoEnum motivoCancelamentoEnum) {
+        this.motivoCancelamentoEnum = motivoCancelamentoEnum;
     }
 }

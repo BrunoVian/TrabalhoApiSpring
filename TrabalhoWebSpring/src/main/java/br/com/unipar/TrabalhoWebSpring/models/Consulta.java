@@ -35,6 +35,7 @@ public class Consulta {
     private Medico medico;
 
     @NotNull
+    @Column(name = "DataHoraConsulta")
     private LocalDateTime dtHr;
 
     public Long getId() {

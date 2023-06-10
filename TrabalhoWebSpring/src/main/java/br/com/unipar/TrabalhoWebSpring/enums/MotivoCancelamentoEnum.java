@@ -1,6 +1,6 @@
 package br.com.unipar.TrabalhoWebSpring.enums;
 
-public enum MotivoCancEnum {
+public enum MotivoCancelamentoEnum {
 
     PACIENTE_DESISTIU,MEDICO_CANCELOU,OUTROS;
 }
