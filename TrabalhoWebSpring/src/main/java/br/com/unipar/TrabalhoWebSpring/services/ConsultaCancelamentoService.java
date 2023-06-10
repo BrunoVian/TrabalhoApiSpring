@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,16 +33,27 @@ public class ConsultaCancelamentoService {
         consultaCancelamento.setConsulta(consulta);
         consultaCancelamento.setMotivoCancelamentoEnum(request.getMotivoCancelamentoEnum());
 
+        //validaCancelamento(consultaCancelamento);
+
         consultaCancelamentoRespository.saveAndFlush(consultaCancelamento);
 
         return consultaCancelamento;
     }
 
-    public ConsultaCancelamento edit(ConsultaCancelamento consulta) throws Exception {
+    public ConsultaCancelamento edit(Long id, ConsultaCancelamentoDTO request) throws Exception {
 
-        consultaCancelamentoRespository.saveAndFlush(consulta);
+        ConsultaCancelamento consultaCancelamento = consultaCancelamentoRespository.findById(id).orElseThrow(()
+                -> new EntityNotFoundException("Cancelamento de Consulta com id: " + id + " não encontrado"));
 
-        return consulta;
+        Consulta consulta = consultaRepository.findById(request.getConsultaId()).orElseThrow(()
+                -> new EntityNotFoundException("Consulta com id: " + request.getConsultaId() + " não encontrada"));
+
+        consultaCancelamento.setConsulta(consulta);
+        consultaCancelamento.setMotivoCancelamentoEnum(request.getMotivoCancelamentoEnum());
+
+        return consultaCancelamentoRespository.saveAndFlush(consultaCancelamento);
+
+
     }
 
     public List<ConsultaCancelamento> findAll() {
@@ -56,15 +69,14 @@ public class ConsultaCancelamentoService {
             throw new Exception("Consulta com ID " + id + " Não Identificado");
     }
 
-    public void validaCancelamento(ConsultaCancelamento consultaCancelamento) throws Exception {
+//    public void validaCancelamento(ConsultaCancelamento consultaCancelamento) throws Exception {
 //        LocalDateTime dataHoraAtual = LocalDateTime.now();
-//        LocalDateTime dataHoraConsulta = consultaCanc.getConsulta().getDtHr().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+//        LocalDateTime dataHoraConsulta = consultaCancelamento.getConsulta().getDtHr();
 //
-//        // Verificar se a consulta está dentro da antecedência mínima de 24 horas para cancelamento
-//        if (dataHoraAtual.plusHours(24).isAfter(dataHoraConsulta)) {
+//        if (dataHoraConsulta.isAfter(dataHoraAtual.plusHours(24))) {
 //            throw new RuntimeException("A consulta só pode ser cancelada com antecedência mínima de 24 horas.");
 //        }
-
-    }
+//
+//    }
 
 }

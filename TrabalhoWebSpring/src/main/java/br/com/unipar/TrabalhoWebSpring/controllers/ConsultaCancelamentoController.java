@@ -26,10 +26,10 @@ public class ConsultaCancelamentoController {
         return consultaCancelamentoService.insert(request);
     }
 
-    @PutMapping
+    @PutMapping(path = "/{id}")
     @ApiOperation(value = "Editar um Cancelamento de consulta")
-    public ConsultaCancelamento edit(@RequestBody ConsultaCancelamento consultaCancelamento) throws Exception{
-        return consultaCancelamentoService.edit(consultaCancelamento);
+    public ConsultaCancelamento edit(@PathVariable Long id, @RequestBody @Valid ConsultaCancelamentoDTO consultaCancelamento) throws Exception{
+        return consultaCancelamentoService.edit(id, consultaCancelamento);
     }
 
     @GetMapping
