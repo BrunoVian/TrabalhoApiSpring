@@ -33,7 +33,7 @@ public class ConsultaService {
                 .orElseThrow(() -> new EntityNotFoundException("Paciente com id: " + request.getPacienteId() + " não encontrado"));
 
         Medico medico = medicoRepository.findById(request.getMedicoId())
-                .orElseThrow(() -> new EntityNotFoundException("Paciente com id: " + request.getMedicoId() + " não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Medico com id: " + request.getMedicoId() + " não encontrado"));
 
         consulta.setMedico(medico);
         consulta.setPaciente(paciente);
@@ -50,14 +50,15 @@ public class ConsultaService {
         return consulta;
     }
 
-    public Consulta edit(ConsultaDTO request) throws Exception {
-        Consulta consulta = new Consulta();
+    public Consulta edit(Long id, ConsultaDTO request) throws Exception {
+        Consulta consulta = consultaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Consulta com id: " + id + " não encontrada"));
 
         Paciente paciente = pacienteRepository.findById(request.getPacienteId())
                 .orElseThrow(() -> new EntityNotFoundException("Paciente com id: " + request.getPacienteId() + " não encontrado"));
 
         Medico medico = medicoRepository.findById(request.getMedicoId())
-                .orElseThrow(() -> new EntityNotFoundException("Paciente com id: " + request.getMedicoId() + " não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Medico com id: " + request.getMedicoId() + " não encontrado"));
 
         consulta.setMedico(medico);
         consulta.setPaciente(paciente);
@@ -142,5 +143,5 @@ public class ConsultaService {
         }
     }
 
-    
+
 }

@@ -29,11 +29,11 @@ public class ConsultaController {
         return insertConsulta;
     }
 
-    @PutMapping
+    @PutMapping(path = "/{id}")
     @ApiOperation(value = "Editar uma consulta")
-    public Consulta edit(@RequestBody ConsultaDTO request) throws Exception{
+    public Consulta edit(@PathVariable Long id, @RequestBody @Valid ConsultaDTO request) throws Exception{
 
-        Consulta editConsulta = consultaService.edit(request);
+        Consulta editConsulta = consultaService.edit(id, request);
 
         return editConsulta;
 
