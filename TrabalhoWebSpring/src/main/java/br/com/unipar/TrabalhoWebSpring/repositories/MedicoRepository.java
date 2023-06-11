@@ -21,9 +21,6 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
     @Query("SELECT m FROM Medico m WHERE m.stAtivo = true AND NOT EXISTS (SELECT c FROM Consulta c WHERE c.medico = m AND c.dtHr = :dateTime)")
     List<Medico> findByDisponivelEm(LocalDateTime dateTime);
 
-
-
-
     interface MedicoProjection {
         String getNome();
         String getCRM();

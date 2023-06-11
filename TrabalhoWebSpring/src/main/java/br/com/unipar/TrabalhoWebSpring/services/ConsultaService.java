@@ -162,11 +162,6 @@ public class ConsultaService {
     }
 
     public void validaConsulta(Consulta consulta) throws Exception{
-
-//        if(consulta.getMedico() == null || consulta.getMedico().getId() == 0){
-//            consulta.setMedico(obterMedicoDisponivelAleatorio(consulta));
-//            System.out.println("PAssou aqui napra add o medico");
-//        }
         validaDisponibilidadePaciente(consulta);
         validaDisponibilidadeMedico(consulta);
         validaStatus(consulta);
