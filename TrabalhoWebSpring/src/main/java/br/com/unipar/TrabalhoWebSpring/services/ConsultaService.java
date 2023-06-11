@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
@@ -133,9 +134,10 @@ public class ConsultaService {
 
     public void validaDisponibilidadePaciente(Consulta consulta) throws Exception{
         Paciente paciente = consulta.getPaciente();
-        LocalDateTime dtHrConsulta = consulta.getDtHr();
+        LocalDate dataConsulta = consulta.getDtHr().toLocalDate();
 
-        List<Consulta> consultas = consultaRepository.findByPacienteAndDtHr(paciente, dtHrConsulta);
+        List<Consulta> consultas = consultaRepository.findByPacienteAndData(paciente, dataConsulta);
+
         if (!consultas.isEmpty()) {
             throw new Exception("Já existe uma consulta agendada para o paciente no mesmo dia.");
         }
@@ -159,13 +161,11 @@ public class ConsultaService {
 //    }
 
     public void validaConsulta(Consulta consulta) throws Exception{
-
         validaDisponibilidadePaciente(consulta);
+        validaDisponibilidadeMedico(consulta);
         validaStatus(consulta);
         validarHorarioFuncionamento(consulta);
         validarAntecedencia(consulta);
-        validaDisponibilidadeMedico(consulta);
-
     }
 
 

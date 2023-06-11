@@ -69,4 +69,14 @@ public class Consulta {
     public void setDtHr(LocalDateTime dtHr) {
         this.dtHr = dtHr;
     }
+
+    @Override
+    public String toString() {
+        return "Consulta{" +
+                "id=" + id +
+                ", paciente=" + paciente +
+                ", medico=" + medico +
+                ", dtHr=" + dtHr +
+                '}';
+    }
 }

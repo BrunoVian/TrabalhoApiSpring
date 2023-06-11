@@ -52,7 +52,7 @@ public class ConsultaCancelamentoService {
         consultaCancelamento.setMotivoCancelamentoEnum(request.getMotivoCancelamentoEnum());
 
         return consultaCancelamentoRespository.saveAndFlush(consultaCancelamento);
-        
+
     }
 
     public List<ConsultaCancelamento> findAll() {
