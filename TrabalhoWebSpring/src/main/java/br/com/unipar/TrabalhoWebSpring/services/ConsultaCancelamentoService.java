@@ -33,7 +33,7 @@ public class ConsultaCancelamentoService {
         consultaCancelamento.setConsulta(consulta);
         consultaCancelamento.setMotivoCancelamentoEnum(request.getMotivoCancelamentoEnum());
 
-        //validaCancelamento(consultaCancelamento);
+        validaCancelamento(consultaCancelamento);
 
         consultaCancelamentoRespository.saveAndFlush(consultaCancelamento);
 
@@ -52,8 +52,7 @@ public class ConsultaCancelamentoService {
         consultaCancelamento.setMotivoCancelamentoEnum(request.getMotivoCancelamentoEnum());
 
         return consultaCancelamentoRespository.saveAndFlush(consultaCancelamento);
-
-
+        
     }
 
     public List<ConsultaCancelamento> findAll() {
@@ -69,14 +68,18 @@ public class ConsultaCancelamentoService {
             throw new Exception("Consulta com ID " + id + " Não Identificado");
     }
 
-//    public void validaCancelamento(ConsultaCancelamento consultaCancelamento) throws Exception {
-//        LocalDateTime dataHoraAtual = LocalDateTime.now();
-//        LocalDateTime dataHoraConsulta = consultaCancelamento.getConsulta().getDtHr();
-//
-//        if (dataHoraConsulta.isAfter(dataHoraAtual.plusHours(24))) {
-//            throw new RuntimeException("A consulta só pode ser cancelada com antecedência mínima de 24 horas.");
-//        }
-//
-//    }
+    public void validaCancelamento(ConsultaCancelamento consultaCancelamento) throws Exception {
+        Consulta consulta = consultaRepository.findById(consultaCancelamento.getConsulta().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Consulta com id: " +
+                        consultaCancelamento.getConsulta().getId() + " não encontrada"));
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime limiteAntecedencia = now.plusHours(24);
+
+        if (consulta.getDtHr().isBefore(limiteAntecedencia)) {
+            throw new Exception("A consulta não pode ser cancelada com menos de 24 horas de antecedência.");
+        }
+
+    }
 
 }
