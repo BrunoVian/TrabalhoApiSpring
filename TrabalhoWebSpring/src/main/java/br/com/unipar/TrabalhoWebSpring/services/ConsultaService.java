@@ -33,10 +33,14 @@ public class ConsultaService {
         Paciente paciente = pacienteRepository.findById(request.getPacienteId())
                 .orElseThrow(() -> new EntityNotFoundException("Paciente com id: " + request.getPacienteId() + " não encontrado"));
 
-        Medico medico = medicoRepository.findById(request.getMedicoId())
-                .orElseThrow(() -> new EntityNotFoundException("Medico com id: " + request.getMedicoId() + " não encontrado"));
+        if(request.getMedicoId() == 0){
+            consulta.setMedico(obterMedicoDisponivelAleatorio(consulta));
+        } else {
+            Medico medico = medicoRepository.findById(request.getMedicoId())
+                    .orElseThrow(() -> new EntityNotFoundException("Medico com id: " + request.getMedicoId() + " não encontrado"));
+            consulta.setMedico(medico);
+        }
 
-        consulta.setMedico(medico);
         consulta.setPaciente(paciente);
         consulta.setDtHr(request.getDtHr());
 
@@ -54,8 +58,9 @@ public class ConsultaService {
         Paciente paciente = pacienteRepository.findById(request.getPacienteId())
                 .orElseThrow(() -> new EntityNotFoundException("Paciente com id: " + request.getPacienteId() + " não encontrado"));
 
+
         Medico medico = medicoRepository.findById(request.getMedicoId())
-                .orElseThrow(() -> new EntityNotFoundException("Medico com id: " + request.getMedicoId() + " não encontrado"));
+                    .orElseThrow(() -> new EntityNotFoundException("Medico com id: " + request.getMedicoId() + " não encontrado"));
 
         consulta.setMedico(medico);
         consulta.setPaciente(paciente);
@@ -143,24 +148,25 @@ public class ConsultaService {
         }
     }
 
-//    public Medico escolherMedicoAleatoriamente(Consulta consulta) throws Exception {
-//
-//        List<Medico> medicosDisponiveis = medicoRepository.findByDisponivelEm(dtHr);
-//
-//        if (medicosDisponiveis.isEmpty()) {
-//            throw new Exception("Não há médicos disponíveis na data/hora especificada.");
-//        }
-//
-//        validaConsulta(consulta);
-//
-//        Random random = new Random();
-//        int index = random.nextInt(medicosDisponiveis.size());
-//
-//        return medicosDisponiveis.get(index);
-//
-//    }
+    public Medico obterMedicoDisponivelAleatorio(Consulta consulta) throws Exception {
+        List<Medico> medicosDisponiveis = medicoRepository.findByDisponivelEm(consulta.getDtHr());
+
+        if (medicosDisponiveis.isEmpty()) {
+            throw new Exception("Não há médicos disponíveis na data/hora especificada.");
+        }
+
+        Random random = new Random();
+        int index = random.nextInt(medicosDisponiveis.size());
+
+        return medicosDisponiveis.get(index);
+    }
 
     public void validaConsulta(Consulta consulta) throws Exception{
+
+//        if(consulta.getMedico() == null || consulta.getMedico().getId() == 0){
+//            consulta.setMedico(obterMedicoDisponivelAleatorio(consulta));
+//            System.out.println("PAssou aqui napra add o medico");
+//        }
         validaDisponibilidadePaciente(consulta);
         validaDisponibilidadeMedico(consulta);
         validaStatus(consulta);
